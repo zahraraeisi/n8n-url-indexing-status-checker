@@ -1,0 +1,196 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        -80
+      ],
+      "id": "3fd68295-6138-4c8a-a9de-ef617ecf0ec7",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1u46UntlE7TJm-SMUvc4D1cuccN86qj9H5OJqpzIMHwk",
+          "mode": "list",
+          "cachedResultName": "check url",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1u46UntlE7TJm-SMUvc4D1cuccN86qj9H5OJqpzIMHwk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1u46UntlE7TJm-SMUvc4D1cuccN86qj9H5OJqpzIMHwk/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -192,
+        -80
+      ],
+      "id": "839c1028-feaf-4070-a85f-7938ab9a0673",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QvHG7YaK0xrWGior",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "inspectUrl",
+        "inspectSiteUrl": "https://www.drsalehilab.com/",
+        "inspectionUrl": "={{ $json.url }}"
+      },
+      "type": "n8n-nodes-google-search-console.googleSearchConsole",
+      "typeVersion": 1,
+      "position": [
+        16,
+        -80
+      ],
+      "id": "1c95a172-b238-4601-873a-acc87eeeec35",
+      "name": "Url inspection index status",
+      "credentials": {
+        "googleSearchConsoleOAuth2Api": {
+          "id": "4cWXaE7DzaKHXWSK",
+          "name": "Google Search Console account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1u46UntlE7TJm-SMUvc4D1cuccN86qj9H5OJqpzIMHwk",
+          "mode": "list",
+          "cachedResultName": "check url",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1u46UntlE7TJm-SMUvc4D1cuccN86qj9H5OJqpzIMHwk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1u46UntlE7TJm-SMUvc4D1cuccN86qj9H5OJqpzIMHwk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "url": "={{ $json.indexStatusResult.googleCanonical }}",
+            "status": "={{ $json.indexStatusResult.coverageState }}"
+          },
+          "matchingColumns": [
+            "url"
+          ],
+          "schema": [
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        240,
+        -80
+      ],
+      "id": "483aa51b-77b0-436b-94fb-af61d0ee6def",
+      "name": "Update row in sheet",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QvHG7YaK0xrWGior",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Url inspection index status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Url inspection index status": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6dede0e2-fcc1-4f17-8c82-24fb997d14ee",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "90508cb8f2d83999afaa216d5287cc3a6638d0fa1d4e1e64e87818d08c9f8efe"
+  },
+  "id": "LRj3RSnfY3sxmLpu",
+  "tags": []
+}
